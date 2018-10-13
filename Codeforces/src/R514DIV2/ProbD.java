@@ -1,3 +1,4 @@
+package R514DIV2;
 /**
  * Created by ankurverma1994
  * My code is awesome!
@@ -7,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+public class ProbD {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,72 +17,45 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
-
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
-            }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
+        int n = ii();
+        int x[] = new int[n];
+        int y[] = new int[n];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
-                }
-                a[i][j] = Integer.parseInt(s[k++]);
-            }
+            x[i] = ii();
+            y[i] = ii();
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
+        out.println(radius(n, x, y));
     }
 
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
+    double dist(double a, double b) {
+        return a * a + b * b;
+    }
+
+    double radius(int n, int x[], int y[]) {
+        double X = 0, Y = 0, d = 0, e;
+        for (int i = 0; i < n; i++) {
+            X += x[i];
+            Y += y[i];
         }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
+        X /= n;
+        Y /= n;
+        double P = 0.1;
+        for (int i = 0; i < 30000; i++) {
+            int f = 0;
+            d = dist(X - x[0], Y - y[0]);
+            for (int j = 1; j < n; j++) {
+                e = dist(X - x[j], Y - y[j]);
+                if (d < e) {
+                    d = e;
+                    f = j;
+                }
+            }
+            X += (x[f] - X) * P;
+            Y += (y[f] - Y) * P;
+            P *= 0.999;
+        }
+        out.println(X + " " + Y + " " + Math.sqrt(d));
+        return Y;
     }
 
 
@@ -94,7 +68,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbD().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

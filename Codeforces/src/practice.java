@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+public class practice {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,74 +16,62 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
+//        TreeNode a = new TreeNode(15);
+//        a.left = new TreeNode(20);
+//        a.left.left = new TreeNode(5);
+//        a.left.left.left = new TreeNode(23);
+//        a.left.left.left.left = new TreeNode(11);
+//        a.left.left.left.left.left = new TreeNode(33);
+//        a.left.left.left.left.left.left = new TreeNode(12);
+////        a.left = new TreeNode(10);
+////        a.right = new TreeNode(9);
+////        a.left.left = new TreeNode(20);
+////        a.left.right = new TreeNode(20);
+////        a.right.left = new TreeNode(6);
+////        a.right.right = new TreeNode(7);
+//        out.println(lca(a, 33, 105));
+        ArrayList<String> a = new ArrayList<>();
+        a.add("abcd");
+        a.add("abds");
+        a.add("abcddd");
+        out.println(longestCommonPrefix(a));
     }
 
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
-            }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
+            left = null;
+            right = null;
         }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
     }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
+    public String longestCommonPrefix(ArrayList<String> A) {
+        if (A == null || A.size() == 0 || A.get(0).length() == 0)
+            return "";
+        StringBuilder sb = new StringBuilder();
+        char c = A.get(0).charAt(0);
+        int n = A.size();
+        for (int index = 0; index < A.get(0).length(); index++) {
+            for (int i = 0; i < n; i++) {
+                System.out.println(i + " " + index);
+                if (index >= A.get(i).length()) return sb.toString();
+                if (i == 0) {
+                    c = A.get(i).charAt(index);
+                } else {
+                    if (c != A.get(i).charAt(index))
+                        return sb.toString();
                 }
-                a[i][j] = Integer.parseInt(s[k++]);
+                if (i == (n - 1)) {
+                    sb.append(c);
+//                System.out.println(i+" "+index);
+                }
             }
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
+        return sb.toString();
     }
-
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
-        }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
-    }
-
 
     //------------> Solution ends here!!
     InputStream obj;
@@ -94,7 +82,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new practice().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

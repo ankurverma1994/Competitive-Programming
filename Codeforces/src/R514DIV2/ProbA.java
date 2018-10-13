@@ -1,3 +1,4 @@
+package R514DIV2;
 /**
  * Created by ankurverma1994
  * My code is awesome!
@@ -7,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+public class ProbA {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,72 +17,24 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
-
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
-            }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
+        int n = ii(), L = ii(), a = ii();
+        int t[] = new int[n];
+        int l[] = new int[n];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
-                }
-                a[i][j] = Integer.parseInt(s[k++]);
-            }
+            t[i] = ii();
+            l[i] = ii();
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
-    }
-
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
+        long ans = 0;
+        int last = 0;
+        for (int i = 0; i < n; i++) {
+            int curr = t[i];
+            ans += (curr - last) / a;
+            last = (curr + l[i]);
+//            out.println("last " + last);
         }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
+        int curr = L;
+        ans += (curr - last) / a;
+        out.println(ans);
     }
 
 
@@ -94,7 +47,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbA().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

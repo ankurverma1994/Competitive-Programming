@@ -1,13 +1,10 @@
-/**
- * Created by ankurverma1994
- * My code is awesome!
- */
+package LTIME64A;
 
 import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+class ProbA {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,72 +13,68 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
-
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
+        for (int tc = ii(); tc > 0; tc--) {
+            int n = ii(), m = ii();
+            Interval interval[] = new Interval[n];
+            Query query[] = new Query[m];
+            for (int i = 0; i < n; i++) {
+                interval[i] = new Interval(ii(), ii());
             }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
+            Arrays.sort(interval);
+            for (int i = 0; i < m; i++) {
+                query[i] = new Query(ii(), i);
             }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
+            Arrays.sort(query);
+            int j = 0;
+            for (int i = 0; i < m; i++) {
+                if (j >= n) break;
+                boolean inf = false;
+                while (query[i].p >= interval[j].R) {
+                    j++;
+                    if (j >= n) {
+                        inf = true;
+                        break;
+                    }
                 }
-                a[i][j] = Integer.parseInt(s[k++]);
+                if (inf) break;
+                query[i].ans = Math.max(interval[j].L - query[i].p, 0);
             }
+            int ans[] = new int[m];
+            for (int i = 0; i < m; i++) {
+                ans[query[i].i] = query[i].ans;
+            }
+            for (int x : ans) out.println(x);
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
+
     }
 
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
+    class Query implements Comparable<Query> {
+        int p, i, ans;
+
+        Query(int x, int y) {
+            p = x;
+            i = y;
+            ans = -1;
         }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
+
+        @Override
+        public int compareTo(Query o) {
+            return Integer.compare(p, o.p);
+        }
+    }
+
+    class Interval implements Comparable<Interval> {
+        int L, R;
+
+        Interval(int x, int y) {
+            L = x;
+            R = y;
+        }
+
+        @Override
+        public int compareTo(Interval o) {
+            return Integer.compare(L, o.L);
+        }
     }
 
 
@@ -94,7 +87,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbA().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

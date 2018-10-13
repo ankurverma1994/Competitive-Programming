@@ -1,3 +1,4 @@
+package LTIME64A;
 /**
  * Created by ankurverma1994
  * My code is awesome!
@@ -7,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+public class ProbD {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,72 +17,24 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
+        for (int tc = ii(); tc > 0; tc--) {
+            int n = ii(), m = ii();
+            int users[] = iia(n);
+            int time[][] = iim(n, m);
+            int ans[][] = iim(n, m);
+            int TIME = Integer.MAX_VALUE;
 
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
-            }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
+            for (int counter = 0; counter < (1 << m); counter++) {
+                HashSet<Integer> indices = new HashSet<>();
+                for (int j = 0; j < m; j++) {
+                    if ((counter & (1 << j)) > 0) {
+                        // include c[j]
+                        indices.add(j);
+                    }
                 }
-                a[i][j] = Integer.parseInt(s[k++]);
+
             }
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
-    }
-
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
-        }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
     }
 
 
@@ -94,7 +47,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbD().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

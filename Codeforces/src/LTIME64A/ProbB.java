@@ -1,13 +1,9 @@
-/**
- * Created by ankurverma1994
- * My code is awesome!
- */
-
+package LTIME64A;
 import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+class ProbB {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,72 +12,37 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
-
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
+        for (int tc = ii(); tc > 0; tc--) {
+            int n = ii();
+            int a[] = iia(n);
+            if (n % 2 == 1) {
+                out.println("NO");
+                continue;
             }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
+            boolean ans = true;
+            for (int i = 0; i < n / 2; i++) {
+                int j = i + n / 2;
+                if (a[i] == -1 && a[j] == -1) {
+                    a[i] = 1;
+                    a[j] = 1;
+                } else if (a[i] == -1) {
+                    a[i] = a[j];
+                } else if (a[j] == -1) {
+                    a[j] = a[i];
                 }
-                a[i][j] = Integer.parseInt(s[k++]);
+                if (a[i] != a[j]) {
+                    ans = false;
+                    break;
+                }
+            }
+            if (!ans) {
+                out.println("NO");
+            } else {
+                out.println("YES");
+                for (int x : a) out.print(x + " ");
+                out.println();
             }
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
-    }
-
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
-        }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
     }
 
 
@@ -94,7 +55,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbB().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

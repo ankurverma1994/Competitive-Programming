@@ -1,3 +1,4 @@
+package Cars24;
 /**
  * Created by ankurverma1994
  * My code is awesome!
@@ -7,8 +8,8 @@ import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
-    final int mod = (int) 1e9 + 7;
+public class ProbC {
+    final int mod = 720720;
     final double eps = 1e-6;
     final double pi = Math.PI;
     final long inf = Long.MAX_VALUE / 2;
@@ -16,72 +17,34 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
-
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
-            }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
+        n = ii();
+        a = iia(n);
+        k = ii();
+        dp = new int[n][k + 10];
         for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
-                }
-                a[i][j] = Integer.parseInt(s[k++]);
-            }
-        }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
+            Arrays.fill(dp[i], -1);
+        out.println(solve(0, 0));
     }
 
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
+    int n, a[], k, dp[][];
+
+    int solve(int i, int numDigit) {
+        if (i == n) {
+            if (numDigit == k) return 1;
+            return 0;
         }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
+        if (numDigit > k)
+            return 0;
+        if (dp[i][numDigit] != -1)
+            return dp[i][numDigit];
+        int ans = 0;
+        ans += solve(i + 1, numDigit);
+        ans %= mod;
+        if ((numDigit > 0) || (a[i] != 0)) {
+            ans += solve(i + 1, numDigit + 1);
+            ans %= mod;
+        }
+        return dp[i][numDigit] = ans;
     }
 
 
@@ -94,7 +57,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbC().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {

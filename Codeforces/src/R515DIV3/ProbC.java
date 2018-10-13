@@ -1,3 +1,4 @@
+package R515DIV3;
 /**
  * Created by ankurverma1994
  * My code is awesome!
@@ -7,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.math.*;
 
-public class SAP {
+public class ProbC {
     final int mod = (int) 1e9 + 7;
     final double eps = 1e-6;
     final double pi = Math.PI;
@@ -16,74 +17,118 @@ public class SAP {
     //------------> Solution starts here!!
     @SuppressWarnings("Main Logic")
     void solve() {
-        out.println(flip(is()));
-    }
-
-    public ArrayList<Integer> flip(String A) {
-        char s[] = A.toCharArray();
-        int l = 0, r = -1, sum = 0;
-        int max_sum = 0, L = -1, R = -1;
-        for (int i = 0; i < s.length; i++)
-        {
-            if (s[i] == '0') sum++;
-            else sum--;
-            if (sum > max_sum)
-            {
-                max_sum = sum;
-                L = l;
-                R = i;
-            }
-            if (sum <= 0)
-            {
-                l = i + 1;
-                sum = 0;
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>();
-        if (L != -1 && R != -1)
-        {
-            ans.add(L+1);
-            ans.add(R+1);
-        }
-        return ans;
-    }
-
-    int dp[][];
-
-    int CollectMoney(int input1, String input2) {
-        int n = input1;
-        int a[][] = new int[n][n];
-        dp = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                dp[i][j] = -1;
-        int k = 0;
-        String s[] = input2.split("\\(|\\)||,");
-        System.out.println(Arrays.toString(s));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                while (s[k].length() == 0) {
-                    k++;
-                }
-                a[i][j] = Integer.parseInt(s[k++]);
+        int n = 0;
+        BIT left = new BIT();
+        BIT right = new BIT();
+        for (int tc = ii(); tc > 0; tc--) {
+            char c = ic();
+            int ID = ii();
+            switch (c) {
+                case 'L':
+                    id[ID] = n;
+                    if (n != 0) {
+                        left.update(0, n - 1, MAX, 1);
+                        right.update(n, n, MAX, n);
+                    }
+                    n++;
+                    break;
+                case 'R':
+                    id[ID] = n;
+                    if (n != 0) {
+                        right.update(0, n - 1, MAX, 1);
+                        left.update(n, n, MAX, n);
+                    }
+                    n++;
+                    break;
+                case '?':
+                    ID = id[ID];
+                    out.println(Math.min(left.getSum(ID), right.getSum(ID)));
+                    break;
             }
         }
-        out.println(Arrays.deepToString(a));
-        int ans = solve(a, n, 0, 0);
-        return ans;
     }
 
-    int solve(int a[][], int n, int x, int y) {
-        if (x == n - 1 && y == n - 1) {
-            return a[x][y];
+
+    final int MAX = 200005;
+    int id[] = new int[MAX];
+
+    class BIT {
+        // Max tree size
+        int BITree[];
+
+        BIT() {
+            BITree = new int[MAX];
         }
-        if (x < 0 || x >= n || y < 0 || y >= n)
-            return Integer.MIN_VALUE / 4;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        return dp[x][y] = a[x][y] + Math.max(solve(a, n, x + 1, y), solve(a, n, x, y + 1));
-    }
 
+        // Updates a node in Binary Index
+        // Tree (BITree) at given index
+        // in BITree. The given value 'val'
+        // is added to BITree[i] and
+        // all of its ancestors in tree.
+        public void updateBIT(int n,
+                              int index,
+                              int val) {
+            // index in BITree[] is 1
+            // more than the index in arr[]
+            index = index + 1;
+
+            // Traverse all ancestors
+            // and add 'val'
+            while (index <= n) {
+                // Add 'val' to current
+                // node of BITree
+                BITree[index] += val;
+
+                // Update index to that
+                // of parent in update View
+                index += index & (-index);
+            }
+        }
+
+        // SERVES THE PURPOSE OF getElement()
+        // Returns sum of arr[0..index]. This
+        // function assumes that the array is
+        // preprocessed and partial sums of
+        // array elements are stored in BITree[]
+        public int getSum(int index) {
+            int sum = 0; //Initialize result
+
+            // index in BITree[] is 1 more
+            // than the index in arr[]
+            index = index + 1;
+
+            // Traverse ancestors
+            // of BITree[index]
+            while (index > 0) {
+
+                // Add current element
+                // of BITree to sum
+                sum += BITree[index];
+
+                // Move index to parent
+                // node in getSum View
+                index -= index & (-index);
+            }
+
+            // Return the sum
+            return sum;
+        }
+
+        // Updates such that getElement()
+        // gets an increased value when
+        // queried from l to r.
+        public void update(int l, int r,
+                           int n, int val) {
+            // Increase value at
+            // 'l' by 'val'
+            updateBIT(n, l, val);
+
+            // Decrease value at
+            // 'r+1' by 'val'
+            updateBIT(n, r + 1, -val);
+        }
+
+    }
 
     //------------> Solution ends here!!
     InputStream obj;
@@ -94,7 +139,7 @@ public class SAP {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new SAP().main1();
+                    new ProbC().main1();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (StackOverflowError e) {
